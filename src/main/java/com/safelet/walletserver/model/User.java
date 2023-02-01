@@ -34,7 +34,15 @@ public class User {
     @Column(name = "registry_date", nullable = false)
     private LocalDateTime registyDate;
 
-    @ManyToMany(mappedBy = "contact")
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
+    )
+    @JoinTable(
+            name = "contact",
+            joinColumns = @JoinColumn(name = "self"),
+            inverseJoinColumns = @JoinColumn(name = "other")
+    )
     private Set<User> contact = new HashSet<>();
 
 }
