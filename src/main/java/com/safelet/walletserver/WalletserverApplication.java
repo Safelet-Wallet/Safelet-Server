@@ -30,6 +30,7 @@ public class WalletserverApplication {
 	@Configuration
 	static class SecurityConfig extends WebSecurityConfiguration {
 
+		/*
 		protected void configure(HttpSecurity http) throws Exception {
 			http.authorizeHttpRequests()
 					.and()
@@ -38,7 +39,7 @@ public class WalletserverApplication {
 					.logout();
 		}
 
-		@Bean
+		/*@Bean
 		public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 			http
 					.authorizeHttpRequests((authorizeHttpRequests) ->
@@ -49,12 +50,12 @@ public class WalletserverApplication {
 			return http.build();
 		}
 
-		/**
+
 		 * Solo permite conexiones seguras mediante protocolo HTTPS
 		 * @param http
 		 * @return
 		 * @throws Exception
-		 */
+
 		@Bean
 		SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 			return http
@@ -63,6 +64,6 @@ public class WalletserverApplication {
 					.authorizeRequests(authorize ->
 							authorize.anyRequest().permitAll())
 					.build();
-		}
+		}*/
 	}
 }
