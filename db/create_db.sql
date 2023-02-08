@@ -25,9 +25,10 @@ DROP TABLE IF EXISTS `safelet-wallet`.`user` ;
 
 CREATE TABLE IF NOT EXISTS `safelet-wallet`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(60) NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
   `name` VARCHAR(60) NULL,
   `surnames` VARCHAR(60) NULL,
-  `username` VARCHAR(60) NOT NULL,
   `registry_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uq_username` (`username` ASC) VISIBLE)
@@ -46,7 +47,9 @@ CREATE TABLE IF NOT EXISTS `safelet-wallet`.`coin` (
   `description` VARCHAR(250) NULL,
   `value_euro` DOUBLE NOT NULL,
   `value_dollar` DOUBLE NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `uq_code` (`code` ASC) VISIBLE,
+  UNIQUE INDEX `uq_name` (`name` ASC) INVISIBLE)
 ENGINE = InnoDB;
 
 
@@ -63,10 +66,10 @@ CREATE TABLE IF NOT EXISTS `safelet-wallet`.`wallet` (
   `coin` INT NOT NULL,
   `balance` DOUBLE NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_cartera_usuario_idx` (`user` ASC) INVISIBLE,
-  UNIQUE INDEX `uq_usuario_tipo` (`user` ASC, `coin` ASC) INVISIBLE,
-  UNIQUE INDEX `uq_clave_publica` (`public_key` ASC) VISIBLE,
-  INDEX `fk_cartera_moneda_idx` (`coin` ASC) VISIBLE)
+  INDEX `fk_wallet_user_idx` (`user` ASC) INVISIBLE,
+  UNIQUE INDEX `uq_wallet` (`user` ASC, `coin` ASC) INVISIBLE,
+  UNIQUE INDEX `uq_public_key` (`public_key` ASC) VISIBLE,
+  INDEX `fk_wallet_coin_idx` (`coin` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -83,10 +86,10 @@ CREATE TABLE IF NOT EXISTS `safelet-wallet`.`transaction` (
   `amount` DOUBLE NOT NULL,
   `coin` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_transaccion_destino_idx` (`destiny` ASC) INVISIBLE,
-  INDEX `fk_transaccion_origen_idx` (`source` ASC) INVISIBLE,
-  INDEX `fk_transaccion_moneda1_idx` (`coin` ASC) VISIBLE,
-  UNIQUE INDEX `uq_transaccion` (`source` ASC, `destiny` ASC, `date` ASC) INVISIBLE)
+  INDEX `fk_transaction_destiny_idx` (`destiny` ASC) INVISIBLE,
+  INDEX `fk_transaction_source_idx` (`source` ASC) INVISIBLE,
+  INDEX `fk_transaction_coin_idx` (`coin` ASC) INVISIBLE,
+  UNIQUE INDEX `uq_transaction` (`source` ASC, `destiny` ASC, `date` ASC) INVISIBLE)
 ENGINE = InnoDB;
 
 
@@ -100,9 +103,9 @@ CREATE TABLE IF NOT EXISTS `safelet-wallet`.`contact` (
   `self` INT NOT NULL,
   `other` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_contacto_contacto_idx` (`other` ASC) INVISIBLE,
-  INDEX `fk_contacto_yo_idx` (`self` ASC) VISIBLE,
-  UNIQUE INDEX `uq_contacto` (`self` ASC, `other` ASC) VISIBLE)
+  INDEX `fk_contact_other_idx` (`other` ASC) INVISIBLE,
+  INDEX `fk_contac_self_idx` (`self` ASC) VISIBLE,
+  UNIQUE INDEX `uq_contact` (`self` ASC, `other` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 

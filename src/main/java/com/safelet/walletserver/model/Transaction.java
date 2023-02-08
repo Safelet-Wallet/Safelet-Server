@@ -13,26 +13,30 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "transaction")
+@Table(name = "transaction", uniqueConstraints = {
+    @UniqueConstraint(name = "uq_transaction", columnNames = {"source", "destiny", "date"})
+})
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne(optional = false)
     @JoinColumn(name = "source", nullable = false)
     private User source;
 
+    @ManyToOne(optional = false)
     @JoinColumn(name = "destiny", nullable = false)
     private User destiny;
 
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
-    //Todo How to do unique groups
 
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @JoinColumn(name = "coin",nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "coin", nullable = false)
     private Coin coin;
 }
