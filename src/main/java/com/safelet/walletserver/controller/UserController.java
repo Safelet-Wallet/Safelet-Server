@@ -51,4 +51,9 @@ public class UserController {
 
 		return userInfo;
 	}
+
+	@PostMapping("/add")
+	public User newUser(@RequestBody User user){
+		return userService.create(user);
+	}
 }
