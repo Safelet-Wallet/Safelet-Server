@@ -1,9 +1,21 @@
 package com.safelet.walletserver.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.safelet.walletserver.model.Coin;
+import com.safelet.walletserver.service.CoinService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("coin")
 public class CoinController {
+
+    private CoinService coinService;
+
+    public CoinController(CoinService coinService) {
+        this.coinService = coinService;
+    }
+
+    @PostMapping("/add")
+    public Coin create(@RequestBody Coin coin){
+        return coinService.create(coin);
+    }
 }

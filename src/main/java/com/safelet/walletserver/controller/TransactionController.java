@@ -2,10 +2,7 @@ package com.safelet.walletserver.controller;
 
 import com.safelet.walletserver.model.Transaction;
 import com.safelet.walletserver.service.TransactionService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +14,11 @@ public class TransactionController {
 
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
+    }
+
+    @PostMapping("/add")
+    public Transaction create(@RequestBody Transaction transaction){
+        return transactionService.create(transaction);
     }
 
     @GetMapping("/received-transactions/{id}")
