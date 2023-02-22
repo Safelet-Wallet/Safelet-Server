@@ -27,6 +27,10 @@ public class UserService {
 		return repository.findByUsername(username);
 	}
 
+	public Optional<User> findByUsernameAndPassword(String username, String password){
+		return repository.findByUsernameAndPassword(username, password);
+	}
+
 	public User create(User user){ return repository.save(user); }
 
     public User update(User user) {

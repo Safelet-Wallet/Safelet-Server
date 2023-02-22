@@ -50,6 +50,12 @@ public class UserController {
 		return service.getById(id);
 	}
 
+	@GetMapping("/{username}/{password}")
+	public Optional<User> findByUsernameAndPassword(@PathVariable("username") String username,
+													@PathVariable("password") String password){
+		return service.findByUsernameAndPassword(username, password);
+	}
+
 	@PostMapping
 	public User create(@RequestBody User user) {
 		return service.create(user);
