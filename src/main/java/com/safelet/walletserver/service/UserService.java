@@ -4,6 +4,8 @@ import com.safelet.walletserver.model.User;
 import com.safelet.walletserver.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Main service class for Users.
  * @authors Andres Sanchez,
@@ -11,14 +13,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-	private final UserRepository userRepository;
+	private final UserRepository repository;
 
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-	public User getUserInfo(String username){
-		return userRepository.findByName(username);
+	public UserService(UserRepository repository) {
+		this.repository = repository;
 	}
 
-	public User create(User user){ return userRepository.save(user); }
+	public Optional<User> getById(Long id) {
+		return repository.findById(id);
+	}
+
+	public Optional<User> getByUsername(String username){
+		return repository.findByUsername(username);
+	}
+
+	public User create(User user){ return repository.save(user); }
+
+    public User update(User user) {
+        return repository.save(user);
+    }
+
+    public boolean delete(Long id) {
+		if (repository.existsById(id)){
+			repository.deleteById(id);
+			return true;
+		}
+		return false;
+	}
 }

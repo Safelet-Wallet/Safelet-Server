@@ -1,22 +1,44 @@
 package com.safelet.walletserver.controller;
 
+import com.safelet.walletserver.model.Coin;
 import com.safelet.walletserver.model.Wallet;
 import com.safelet.walletserver.service.WalletService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("wallet")
 public class WalletController {
 
-    private WalletService walletService;
+    private WalletService service;
 
-    @PostMapping("/add")
-    public Wallet create(@RequestBody Wallet wallet){
-        return walletService.create(wallet);
+    public WalletController(WalletService service) {
+        this.service = service;
     }
 
-    @GetMapping("/balance")
-    public Double getBalance(@PathVariable Long id){
-        return walletService.getBalance(id);
+    @GetMapping("{id}")
+    public Optional<Wallet> getById(@PathVariable("id") Long id) {
+        return service.getById(id);
     }
+
+    @GetMapping("/balance/{id}")
+    public Optional<Double> getBalance(@PathVariable("id") Long id){
+        return service.getBalance(id);
+    }
+
+    @PostMapping
+	public Wallet create(@RequestBody Wallet wallet) {
+		return service.create(wallet);
+	}
+
+	@PutMapping
+	public Wallet update(@RequestBody Wallet wallet) {
+		return service.update(wallet);
+	}
+
+	@DeleteMapping("/{id}")
+	public boolean delete(@PathVariable("id") Long id) {
+		return service.delete(id);
+	}
 }

@@ -1,33 +1,51 @@
 package com.safelet.walletserver.controller;
 
+import com.safelet.walletserver.model.Coin;
 import com.safelet.walletserver.model.Transaction;
+import com.safelet.walletserver.model.Wallet;
 import com.safelet.walletserver.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("transaction")
 public class TransactionController {
 
-    private TransactionService transactionService;
+    private final TransactionService service;
 
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
+    public TransactionController(TransactionService service) {
+        this.service = service;
     }
 
-    @PostMapping("/add")
-    public Transaction create(@RequestBody Transaction transaction){
-        return transactionService.create(transaction);
+    @GetMapping("{id}")
+    public Optional<Transaction> getById(@PathVariable("id") Long id) {
+        return service.getById(id);
     }
 
     @GetMapping("/received-transactions/{id}")
     public List<Transaction> getTransactionsSource(@PathVariable(name = "id") Long id){
-        return transactionService.getTransactionsSource(id);
+        return service.getTransactionsSource(id);
     }
 
     @GetMapping("/sent-transactions/{id}")
     public List<Transaction> getTransactionsDestiny(@PathVariable(name = "id") Long id){
-        return transactionService.getTransactionsDestiny(id);
+        return service.getTransactionsDestiny(id);
+    }
+
+    @PostMapping
+    public Transaction create(@RequestBody Transaction transaction) {
+        return service.create(transaction);
+    }
+
+    @PutMapping
+    public Transaction update(@RequestBody Transaction transaction) {
+        return service.update(transaction);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable("id") Long id) {
+        return service.delete(id);
     }
 }

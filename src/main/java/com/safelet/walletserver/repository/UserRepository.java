@@ -3,7 +3,8 @@ package com.safelet.walletserver.repository;
 import com.safelet.walletserver.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
 
-	User findByName(String name);
+public interface UserRepository extends JpaRepository<User, Long> {
+	Optional<User> findByUsername(String username);
 }
