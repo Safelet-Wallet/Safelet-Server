@@ -1,7 +1,6 @@
 package com.safelet.walletserver.controller;
 
 import com.safelet.walletserver.model.Coin;
-import com.safelet.walletserver.model.Wallet;
 import com.safelet.walletserver.service.CoinService;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,11 +8,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("coin")
-public class CoinController {
+public class CoinRestController {
 
     private final CoinService service;
 
-    public CoinController(CoinService service) {
+    public CoinRestController(CoinService service) {
         this.service = service;
     }
 

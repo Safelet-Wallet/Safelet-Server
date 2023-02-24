@@ -1,6 +1,5 @@
 package com.safelet.walletserver.controller;
 
-import com.safelet.walletserver.model.Coin;
 import com.safelet.walletserver.model.User;
 import com.safelet.walletserver.service.UserService;
 //import org.springframework.security.core.GrantedAuthority;
@@ -18,11 +17,11 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserRestController {
 
 	private final UserService service;
 
-	public UserController(UserService service) {
+	public UserRestController(UserService service) {
 		this.service = service;
 	}
 
