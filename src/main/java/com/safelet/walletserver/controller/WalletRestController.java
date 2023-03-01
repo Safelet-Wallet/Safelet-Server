@@ -1,43 +1,46 @@
 package com.safelet.walletserver.controller;
 
-import com.safelet.walletserver.model.Wallet;
+import com.safelet.walletserver.model.User;
+import com.safelet.walletserver.service.UserService;
 import com.safelet.walletserver.service.WalletService;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.util.Base64;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("wallet")
+@RequestMapping("")
 public class WalletRestController {
 
-    private WalletService service;
+    private final WalletService walletService;
+	private final UserService userService;
 
-    public WalletRestController(WalletService service) {
-        this.service = service;
-    }
-
-    @GetMapping("{id}")
-    public Optional<Wallet> getById(@PathVariable("id") Long id) {
-        return service.getById(id);
-    }
-
-    @GetMapping("/balance/{id}")
-    public Optional<Double> getBalance(@PathVariable("id") Long id){
-        return service.getBalance(id);
-    }
-
-    @PostMapping
-	public Wallet create(@RequestBody Wallet wallet) {
-		return service.create(wallet);
+	public WalletRestController(WalletService walletService, UserService userService) {
+		this.walletService = walletService;
+		this.userService = userService;
 	}
 
-	@PutMapping
-	public Wallet update(@RequestBody Wallet wallet) {
-		return service.update(wallet);
-	}
+    @GetMapping("/{address}")
+    public BigInteger getBalance(@PathVariable("address") String address){
+        return walletService.getBalanceByAddress(address);
+    }
 
-	@DeleteMapping("/{id}")
-	public boolean delete(@PathVariable("id") Long id) {
-		return service.delete(id);
-	}
+    @PostMapping("/address/new")
+    public String createNewAddress(@RequestParam("token") String token){
+        return walletService.createNewAddress(token);
+    }
+
+	//Ciframos en base64
+	@PostMapping("/login/")
+    public String createUser(@RequestParam("username") String username, @RequestParam("password") String password){
+
+		Base64.Decoder decoder = Base64.getDecoder();
+		password =new String(decoder.decode(password.getBytes()));
+		System.out.println(password);
+		Optional<User> user = userService.findByUsernameAndPassword(username, password);
+		if(user.isPresent()){
+			return walletService.generateToken(username);
+		} else return "";
+    }
 }

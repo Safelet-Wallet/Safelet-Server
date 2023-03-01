@@ -30,29 +30,17 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "public_key")
+	private String publicKey;
 
-	@Column(name = "surname")
-	private String surnames;
+	@Column(name = "private_key")
+	private String privateKey;
 
-	@Column(name = "registry_date", nullable = false)
-	private LocalDateTime registyDate;
+	@Column(name = "address")
+	private String address;
 
-	@OneToMany(mappedBy = "source")
-	private Set<Transaction> received = new LinkedHashSet<>();
-
-	@OneToMany(mappedBy = "destiny")
-	private Set<Transaction> sent = new LinkedHashSet<>();
-
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "contact",
-		joinColumns = @JoinColumn(name = "self"),
-		inverseJoinColumns = @JoinColumn(name = "other"))
-	private Set<User> contacts = new LinkedHashSet<>();
-
-	@OneToMany(mappedBy = "user", orphanRemoval = true)
-	private Set<Wallet> wallets = new LinkedHashSet<>();
+	@Column(name = "registry_date")
+	private LocalDateTime registyDate = LocalDateTime.now();
 
 	@Override
 	public boolean equals(Object o) {

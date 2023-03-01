@@ -1,7 +1,6 @@
 package com.safelet.walletserver.repository;
 
 import com.safelet.walletserver.model.Transaction;
-import com.safelet.walletserver.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
