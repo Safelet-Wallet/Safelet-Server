@@ -31,14 +31,21 @@ public class WalletRestController {
         return walletService.createNewAddress(token);
     }
 
+	@PostMapping("/register")
+	public User register(@RequestParam("username") String username, @RequestParam("password") String password) {
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		return userService.create(user);
+	}
+
 	//Ciframos en base64
 	@PostMapping("/login/")
-    public String createUser(@RequestParam("username") String username, @RequestParam("password") String password){
-
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password){
 		Base64.Decoder decoder = Base64.getDecoder();
-		password =new String(decoder.decode(password.getBytes()));
+		password = new String(decoder.decode(password.getBytes()));
 		System.out.println(password);
-		Optional<User> user = userService.findByUsernameAndPassword(username, password);
+		Optional<User> user = userService.getByUsernameAndPassword(username, password);
 		if(user.isPresent()){
 			return walletService.generateToken(username);
 		} else return "";
