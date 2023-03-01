@@ -30,14 +30,8 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "public_key")
-	private String publicKey;
-
-	@Column(name = "private_key")
-	private String privateKey;
-
-	@Column(name = "address")
-	private String address;
+	@Column(name = "wallet_url")
+	private String walletUrl;
 
 	@Column(name = "registry_date")
 	private LocalDateTime registyDate = LocalDateTime.now();

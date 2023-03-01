@@ -5,6 +5,7 @@ import com.safelet.walletserver.service.UserService;
 import com.safelet.walletserver.service.WalletService;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Base64;
 import java.util.Optional;
@@ -26,6 +27,11 @@ public class WalletRestController {
         return walletService.getBalanceByAddress(address);
     }
 
+    @GetMapping("/eth/send")
+    public String sendEthereum(@RequestParam("recipient") String toAddress, @RequestParam("amount") BigDecimal amount, @RequestParam("token") String token){
+        return walletService.sendEthereum(toAddress, amount, token);
+    }
+
     @PostMapping("/address/new")
     public String createNewAddress(@RequestParam("token") String token){
         return walletService.createNewAddress(token);
@@ -34,13 +40,15 @@ public class WalletRestController {
 	@PostMapping("/register")
 	public User register(@RequestParam("username") String username, @RequestParam("password") String password) {
 		User user = new User();
+		Base64.Decoder decoder = Base64.getDecoder();
+		password = new String(decoder.decode(password.getBytes()));
 		user.setUsername(username);
 		user.setPassword(password);
 		return userService.create(user);
 	}
 
 	//Ciframos en base64
-	@PostMapping("/login/")
+	@PostMapping("/login")
     public String login(@RequestParam("username") String username, @RequestParam("password") String password){
 		Base64.Decoder decoder = Base64.getDecoder();
 		password = new String(decoder.decode(password.getBytes()));
