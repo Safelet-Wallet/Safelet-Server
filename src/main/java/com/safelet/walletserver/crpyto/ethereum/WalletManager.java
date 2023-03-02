@@ -49,5 +49,4 @@ public class WalletManager {
 		TransactionReceipt transactionReceipt = Transfer.sendFunds(web3j, credentials, toAddress, amount, Convert.Unit.ETHER).send();
 	}
 
-
 }

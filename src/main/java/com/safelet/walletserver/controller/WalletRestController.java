@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +56,20 @@ public class WalletRestController {
 		user.setPassword(password);
 		return userService.create(user);
 	}
+
+	//**NUEVO MD5 DIGEST HTTP**
+	@PostMapping("/login/auth/request")
+	public String loginWithoutAuth(@RequestParam("username") String username, @RequestParam("password") String password){
+		return walletService.getRandomNonce(username);
+	}
+
+	//**NUEVO MD5 DIGEST HTTP**
+	@PostMapping("/login/auth")
+	public String loginDigest(@RequestParam("hash") String received_hash, @RequestParam("nonce") String nonce){
+		User user =  walletService.digestLogin(received_hash, nonce);
+		return (user != null) ? walletService.generateToken(user.getUsername()) : "";
+	}
+
 
 	//Ciframos en base64
 	@PostMapping("/login")
