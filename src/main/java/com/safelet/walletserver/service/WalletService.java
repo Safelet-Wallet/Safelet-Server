@@ -162,6 +162,18 @@ public class WalletService {
 		new Random().nextBytes(resBuf);
 		String nonce = new String(Hex.encode(resBuf));
 		nonceRepository.save(new Nonce(user, nonce));
+
+		new Thread(() -> {
+			try {
+
+				TimeUnit.SECONDS.sleep(20);
+				nonceRepository.removeByUser(user);
+
+			} catch (InterruptedException e) {
+				System.out.println("token delete stopped.");
+			}
+		}).start();
+
 		return nonce;
 	}
 
