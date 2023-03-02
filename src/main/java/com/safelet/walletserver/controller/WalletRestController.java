@@ -29,7 +29,7 @@ public class WalletRestController {
         return walletService.getBalanceByAddress(address);
     }
 
-    @GetMapping("/eth/send")
+    @PostMapping("/eth/send")
     public String sendEthereum(@RequestParam("recipient") String toAddress, @RequestParam("amount") BigDecimal amount, @RequestParam("token") String token){
         return walletService.sendEthereum(toAddress, amount, token);
     }
