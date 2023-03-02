@@ -175,10 +175,31 @@ public class WalletService {
 			User user = userOptional.get();
 			String hashedLocal = DigestUtils.md5DigestAsHex((user.getUsername() + ":" + user.getPassword() + ":" + nonce).getBytes());
 
-			System.out.println(Arrays.toString(hashedLocal.getBytes()));
 			return (received_hash.equals(hashedLocal)) ? user : null;
 		}
 
+		return null;
+	}
+
+	public String getAddress(String token) {
+
+		Optional<AuthToken> cred = tokenRepository.findByToken(token);
+		if (cred.isPresent()) {
+			User user = userRepository.findByUsername(cred.get().getUser()).get();
+
+			try {
+				String url = user.getWalletUrl();
+				Credentials credentials = walletManager.getCredentialsFrom(url);
+				return credentials.getAddress();
+
+			} catch (IOException | CipherException  e) {
+				System.out.println("Error finding address.");
+				System.out.println(e);
+				System.out.println(e.getMessage());
+			}
+		} else {
+			return "Invalid AuthToken";
+		}
 		return null;
 	}
 }
