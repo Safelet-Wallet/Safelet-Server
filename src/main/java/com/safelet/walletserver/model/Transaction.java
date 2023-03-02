@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,9 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "transaction", uniqueConstraints = {
-    @UniqueConstraint(name = "uq_transaction", columnNames = {"source", "destiny", "date"})
-})
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +25,16 @@ public class Transaction {
     @JoinColumn(name = "source", nullable = false)
     private User source;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "destiny", nullable = false)
-    private User destiny;
+    @Column(nullable = false)
+    private String toAddress;
+
+    @Column(nullable = false)
+    private String status = "Pending";
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @Column(name = "amount", nullable = false)
-    private Double amount;
+    private BigDecimal amount;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "coin", nullable = false)
-    private Coin coin;
 }

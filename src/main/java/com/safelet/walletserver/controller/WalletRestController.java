@@ -1,5 +1,6 @@
 package com.safelet.walletserver.controller;
 
+import com.safelet.walletserver.model.Transaction;
 import com.safelet.walletserver.model.User;
 import com.safelet.walletserver.service.UserService;
 import com.safelet.walletserver.service.WalletService;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +32,11 @@ public class WalletRestController {
     @GetMapping("/eth/send")
     public String sendEthereum(@RequestParam("recipient") String toAddress, @RequestParam("amount") BigDecimal amount, @RequestParam("token") String token){
         return walletService.sendEthereum(toAddress, amount, token);
+    }
+
+	@GetMapping("/transactions/")
+    public List<Transaction> getTransactions(@RequestParam("token") String token){
+        return walletService.getTransactions(token);
     }
 
     @PostMapping("/address/new")

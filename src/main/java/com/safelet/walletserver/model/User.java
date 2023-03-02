@@ -1,5 +1,6 @@
 package com.safelet.walletserver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,9 +9,8 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
+
 
 @Getter
 @Setter
@@ -27,9 +27,11 @@ public class User {
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
+	@JsonIgnore
 	@Column(name = "password", nullable = false)
 	private String password;
 
+	@JsonIgnore
 	@Column(name = "wallet_url")
 	private String walletUrl;
 

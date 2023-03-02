@@ -31,11 +31,11 @@ public class WalletManager {
 
 	public String createWallet() throws IOException, CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
 		File walletDirectory = new File(folder);
-		return WalletUtils.generateFullNewWalletFile("safelet",walletDirectory);
+		return System.getProperty("user.dir") + "/wallets/" + WalletUtils.generateFullNewWalletFile("safelet",walletDirectory);
 	}
 
 	public Credentials getCredentialsFrom(String url) throws CipherException, IOException {
-		return WalletUtils.loadCredentials("safelet", System.getProperty("user.dir") + "/wallets/" + url);
+		return WalletUtils.loadCredentials("safelet", url);
 	}
 
 	public BigInteger getBalance(String address) throws IOException {
@@ -45,7 +45,9 @@ public class WalletManager {
 
 	public void sendEther(Credentials credentials, String toAddress, BigDecimal amount) throws Exception {
 		BigInteger value = Convert.toWei(amount, Convert.Unit.ETHER).toBigInteger();
-		TransactionReceipt transactionReceipt = Transfer.sendFunds(web3j, credentials, toAddress, amount, Convert.Unit.ETHER).send();
 
+		TransactionReceipt transactionReceipt = Transfer.sendFunds(web3j, credentials, toAddress, amount, Convert.Unit.ETHER).send();
 	}
+
+
 }
